@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Join Images - Free Online Image Stitcher & Merger</title>
+    <meta name="description" content="The easiest way to join, stitch, and merge multiple images into one vertically or horizontally. 100% free, private, and client-side. No uploads required.">
+    <meta name="keywords" content="join images, stitch images, merge photos, combine images online, image joiner, vertical stitch, horizontal stitch">
+    <meta name="author" content="Join Images">
+    <link rel="canonical" href="https://yourwebsite.com/"> 
+    <meta property="og:title" content="Join Images - Free Image Stitching Tool">
+    <meta property="og:description" content="Join, stitch & merge multiple images into one. 100% Client-side & Privacy friendly.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourwebsite.com/">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Join Images",
+      "url": "https://yourwebsite.com",
+      "description": "Free online tool to join, stitch, and merge multiple images into one file.",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": "Vertical stitching, Horizontal stitching, Smart resizing, Privacy-focused"
+    }
+    </script>
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.5;
+        }
+
+        /* Header Styling */
+        header { text-align: center; margin-bottom: 30px; max-width: 600px; }
+        h1 { margin: 0 0 10px 0; font-size: 2rem; letter-spacing: -0.02em; }
+        .byline { color: var(--text-sub); font-size: 1.1rem; margin: 0; }
+
+        /* Main App Interface */
+        main { width: 100%; display: flex; flex-direction: column; align-items: center; }
+
+        .controls {
+            background: var(--surface);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+            max-width: 800px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .control-group { display: flex; flex-direction: column; gap: 10px; }
+        .control-group.upload-group { flex: 1; min-width: 250px; }
+
+        .control-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-sub);
+            font-weight: 700;
+        }
+
+        /* Buttons */
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn:hover { background-color: var(--primary-hover); }
+        .btn:active { transform: translateY(1px); }
+        
+        /* Radio Inputs */
+        .radio-group { display: flex; flex-direction: column; gap: 10px; }
+        .radio-group label { 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+        .radio-group input[type="radio"] { accent-color: var(--primary); width: 16px; height: 16px; }
+
+        /* Upload Area */
+        #fileInput { display: none; }
+        .upload-btn {
+            background: var(--bg);
+            border: 2px dashed #cbd5e1;
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-sub);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+            min-height: 80px;
+            transition: all 0.2s;
+            box-sizing: border-box;
+        }
+        .upload-btn:hover { border-color: var(--primary); color: var(--primary); background: #eff6ff; }
+
+        /* Draggable List */
+        .queue-container { width: 100%; max-width: 800px; margin-bottom: 30px; }
+        
+        .queue-list {
+            display: flex;
+            gap: 15px;
+            padding: 20px;
+            background: #e2e8f0;
+            border-radius: 12px;
+            overflow-x: auto;
+            min-height: 140px;
+            align-items: center;
+            box-sizing: border-box;
+            /* Scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 transparent;
+        }
+        
+        .queue-list::-webkit-scrollbar { height: 8px; }
+        .queue-list::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 4px; }
+
+        .thumb-card {
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: grab;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.1s;
+            user-select: none;
+        }
+        .thumb-card:active { cursor: grabbing; transform: scale(0.98); }
+        .thumb-card img { height: 100px; width: auto; display: block; border-radius: 4px; pointer-events: none; }
+
+        .thumb-card .remove-btn {
+            position: absolute;
+            top: -8px; right: -8px;
+            background: #ef4444; color: white;
+            border: none; border-radius: 50%;
+            width: 24px; height: 24px;
+            font-size: 14px; font-weight: bold;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: background 0.2s;
+        }
+        .thumb-card .remove-btn:hover { background: #dc2626; }
+
+        /* Canvas / Preview */
+        .preview-area {
+            max-width: 100%;
+            overflow: auto;
+            border: 1px solid var(--border);
+            background-image: linear-gradient(45deg, #e5e7eb 25%, transparent 25%), linear-gradient(-45deg, #e5e7eb 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e5e7eb 75%), linear-gradient(-45deg, transparent 75%, #e5e7eb 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            margin-bottom: 20px;
+            display: none;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        canvas { display: block; max-width: 100%; height: auto; }
+        .actions { display: none; margin-bottom: 40px; }
+
+        /* SEO Content Section */
+        .seo-content {
+            max-width: 800px;
+            margin-top: 50px;
+            border-top: 1px solid var(--border);
+            padding-top: 40px;
+            color: #334155;
+        }
+        .seo-content h2 { margin-top: 0; color: #0f172a; }
+        .seo-content h3 { color: #0f172a; margin-top: 25px; }
+        .seo-content p { margin-bottom: 15px; color: #475569; }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .controls { flex-direction: column; gap: 20px; }
+            .control-group { width: 100%; }
+            h1 { font-size: 1.75rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>JoinImages - Free Image Stitching Tool</h1>
+        <p class="byline">Join, stitch & merge multiple images into one. 100% Client-side & Privacy friendly. We never upload your images.</p>
+    </header>
+
+    <main>
+        <div class="controls">
+            <div class="control-group upload-group">
+                <label class="upload-btn" for="fileInput">
+                    <div>
+                        <strong>+ Upload Images</strong><br>
+                        <span style="font-size:13px; font-weight:normal; opacity:0.8;">Drag & drop or click to select</span>
+                    </div>
+                </label>
+                <input type="file" id="fileInput" multiple accept="image/*">
+            </div>
+
+            <div class="control-group">
+                <span class="control-title">Stacking Direction</span>
+                <div class="radio-group">
+                    <label><input type="radio" name="direction" value="vertical" checked> Vertical (Column)</label>
+                    <label><input type="radio" name="direction" value="horizontal"> Horizontal (Row)</label>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <span class="control-title">Size Adjustment</span>
+                <div class="radio-group">
+                    <label><input type="radio" name="sizing" value="original" checked> Do Nothing (Keep Original)</label>
+                    <label><input type="radio" name="sizing" value="fit"> Reduce Bigger Images to Fit</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="queue-container">
+            <div class="queue-list" id="queueList">
+                <span style="color:#64748b; margin: auto; text-align: center;">Selected images will appear here.<br>Drag to reorder.</span>
+            </div>
+        </div>
+
+        <div class="actions" id="actionPanel">
+            <button class="btn" id="downloadBtn">Download Stitched Image</button>
+        </div>
+
+        <div class="preview-area" id="previewContainer">
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <article class="seo-content">
+            <h2>How to Join Images Online for Free</h2>
+            <p>Welcome to <strong>Join Images</strong>, the simplest tool to combine photos into a single file. Whether you need to create a vertical collage for Pinterest, stitch screenshots for a tutorial, or merge photos for a comparison, our tool handles it instantly.</p>
+            
+            <h3>Why use this Image Stitcher?</h3>
+            <ul>
+                <li><strong>100% Private:</strong> Your photos are processed in your browser. They are never uploaded to our servers.</li>
+                <li><strong>No Watermarks:</strong> Download your stitched images clean and free.</li>
+                <li><strong>Smart Resizing:</strong> Automatically scale down larger images to fit perfectly with smaller ones without distortion.</li>
+                <li><strong>Drag & Drop:</strong> Easily reorder your image stack before downloading.</li>
+            </ul>
+
+            <h3>How it works</h3>
+            <ol>
+                <li>Click <strong>Upload Images</strong> to select your files.</li>
+                <li>Choose between <strong>Vertical</strong> (top-to-bottom) or <strong>Horizontal</strong> (side-by-side) stacking.</li>
+                <li>Drag the thumbnails to rearrange the order.</li>
+                <li>Click <strong>Download Stitched Image</strong> to save your file.</li>
+            </ol>
+        </article>
+    </main>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const queueList = document.getElementById('queueList');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const actionPanel = document.getElementById('actionPanel');
+        const previewContainer = document.getElementById('previewContainer');
+        const allRadios = document.querySelectorAll('input[type="radio"]');
+
+        let images = [];
+
+        // Helper: Convert File to Image Object using Promises
+        const readImageFile = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.onload = () => resolve(img);
+                    img.onerror = () => reject(new Error(`Failed to load image: ${file.name}`));
+                    img.src = event.target.result;
+                };
+                reader.onerror = () => reject(new Error(`Failed to read file: ${file.name}`));
+                reader.readAsDataURL(file);
+            });
+        };
+
+        // 1. Handle File Uploads
+        fileInput.addEventListener('change', async (e) => {
+            const files = Array.from(e.target.files);
+            if (!files.length) return;
+
+            try {
+                const newImages = await Promise.all(files.map(readImageFile));
+                images = [...images, ...newImages];
+                renderQueue();
+                stitchImages();
+            } catch (error) {
+                console.error(error);
+                alert("There was an error loading your images. Please try again.");
+            }
+            fileInput.value = '';
+        });
+
+        // 2. Render Queue
+        function renderQueue() {
+            queueList.innerHTML = '';
+            
+            images.forEach((img, index) => {
+                const card = document.createElement('div');
+                card.className = 'thumb-card';
+                card.draggable = true;
+                card.dataset.index = index;
+
+                const thumb = img.cloneNode(); 
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-btn';
+                removeBtn.innerHTML = '&times;';
+                removeBtn.title = "Remove image";
+                removeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    removeImage(index);
+                };
+
+                card.appendChild(thumb);
+                card.appendChild(removeBtn);
+                queueList.appendChild(card);
+
+                card.addEventListener('dragstart', handleDragStart);
+                card.addEventListener('dragover', handleDragOver);
+                card.addEventListener('drop', handleDrop);
+                card.addEventListener('dragend', handleDragEnd);
+            });
+
+            if(images.length > 0) {
+                actionPanel.style.display = 'flex';
+                previewContainer.style.display = 'block';
+            } else {
+                actionPanel.style.display = 'none';
+                previewContainer.style.display = 'none';
+                queueList.innerHTML = '<span style="color:#64748b; margin: auto; text-align: center;">Selected images will appear here.<br>Drag to reorder.</span>';
+            }
+        }
+
+        function removeImage(index) {
+            images.splice(index, 1);
+            renderQueue();
+            stitchImages();
+        }
+
+        // 3. Drag Logic
+        let draggedIndex = null;
+        function handleDragStart(e) {
+            draggedIndex = +this.dataset.index;
+            this.style.opacity = '0.4';
+            e.dataTransfer.effectAllowed = 'move';
+        }
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+        function handleDrop(e) {
+            e.stopPropagation();
+            const targetCard = e.target.closest('.thumb-card');
+            if (!targetCard) return;
+            const droppedIndex = +targetCard.dataset.index;
+            if (draggedIndex !== droppedIndex) {
+                const itemToMove = images[draggedIndex];
+                images.splice(draggedIndex, 1);
+                images.splice(droppedIndex, 0, itemToMove);
+                renderQueue();
+                stitchImages();
+            }
+            return false;
+        }
+        function handleDragEnd() { this.style.opacity = '1'; }
+
+        // 4. Stitching Logic with Resizing
+        function stitchImages() {
+            if (images.length === 0) return;
+
+            const direction = document.querySelector('input[name="direction"]:checked').value;
+            const sizingMode = document.querySelector('input[name="sizing"]:checked').value;
+            
+            let totalWidth = 0;
+            let totalHeight = 0;
+
+            const finalDims = images.map(img => ({ 
+                img: img, 
+                w: img.width, 
+                h: img.height 
+            }));
+
+            if (sizingMode === 'fit') {
+                if (direction === 'vertical') {
+                    const minWidth = Math.min(...images.map(i => i.width));
+                    finalDims.forEach(d => {
+                        const scale = minWidth / d.w;
+                        d.w = minWidth;
+                        d.h = d.h * scale;
+                    });
+                } else {
+                    const minHeight = Math.min(...images.map(i => i.height));
+                    finalDims.forEach(d => {
+                        const scale = minHeight / d.h;
+                        d.h = minHeight;
+                        d.w = d.w * scale;
+                    });
+                }
+            }
+
+            if (direction === 'vertical') {
+                totalWidth = Math.max(...finalDims.map(d => d.w));
+                totalHeight = finalDims.reduce((sum, d) => sum + d.h, 0);
+            } else {
+                totalWidth = finalDims.reduce((sum, d) => sum + d.w, 0);
+                totalHeight = Math.max(...finalDims.map(d => d.h));
+            }
+
+            canvas.width = totalWidth;
+            canvas.height = totalHeight;
+
+            let x = 0;
+            let y = 0;
+
+            finalDims.forEach(d => {
+                ctx.drawImage(d.img, x, y, d.w, d.h);
+                if (direction === 'vertical') {
+                    y += d.h;
+                } else {
+                    x += d.w;
+                }
+            });
+        }
+
+        allRadios.forEach(r => r.addEventListener('change', stitchImages));
+
+        downloadBtn.addEventListener('click', () => {
+            const link = document.createElement('a');
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            link.download = `stitched-image-${timestamp}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
+
+    </script>
+</body>
+</html>
