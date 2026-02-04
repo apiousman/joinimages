@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Join Images - Free Online Image Stitcher & Merger</title>
-    <meta name="description" content="The easiest way to join, stitch, and merge multiple images into one vertically or horizontally. 100% free, private, and client-side. No uploads required.">
-    <meta name="keywords" content="join images, stitch images, merge photos, combine images online, image joiner, vertical stitch, horizontal stitch">
+    <title>Join Images - Merge & Join images for Free</title>
+    <meta name="description" content="The easy & free way to merge, join or stitch multiple images into one vertical or horizontal image. 100% free, private. No uploads required.">
+    <meta name="keywords" content="join images, merge images, stitch images, combine photos, image merger, vertical stitch, horizontal stitch, free image joiner">
     <meta name="author" content="Join Images">
     <link rel="canonical" href="https://joinimages.com/"> 
+    
+    <link rel="icon" href="https://epicwhale.app/lovable-uploads/53c1e7e8-2fb9-48b1-a0c4-f73ed0525ea7.png">
 
-    <meta property="og:title" content="Join Images - Free Image Stitching Tool">
-    <meta property="og:description" content="Join, stitch & merge multiple images into one. 100% Client-side & Privacy friendly.">
+    <meta property="og:title" content="Join Images - Merge & Join images for Free!">
+    <meta property="og:description" content="Join, merge or stitch multiple images into one. 100% Privacy friendly. We never upload your images.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://joinimages.com/">
     
@@ -84,12 +86,72 @@
         .control-group { display: flex; flex-direction: column; gap: 10px; }
         .control-group.upload-group { flex: 1; min-width: 250px; }
 
+        .control-title-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
         .control-title {
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             color: var(--text-sub);
             font-weight: 700;
+        }
+
+        /* Tooltip Styling */
+        .tooltip {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            background: #e2e8f0;
+            color: #64748b;
+            border-radius: 50%;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: help;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #334155;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-size: 12px;
+            font-weight: normal;
+            line-height: 1.4;
+            text-transform: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #334155 transparent transparent transparent;
         }
 
         /* Buttons */
@@ -201,7 +263,8 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
         canvas { display: block; max-width: 100%; height: auto; }
-        .actions { display: none; margin-bottom: 40px; }
+        
+        .actions { display: none; margin-bottom: 30px; }
 
         /* SEO Content Section */
         .seo-content {
@@ -311,6 +374,21 @@
         .modal-body h3 { font-size: 1.1rem; margin-top: 20px; }
         .modal-body p, .modal-body li { color: #475569; line-height: 1.6; }
 
+        /* Donation Specific */
+        .donate-btn {
+            background-color: #FFDD00;
+            color: #000;
+            font-weight: bold;
+            display: inline-block;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin-top: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.1s;
+        }
+        .donate-btn:hover { transform: scale(1.05); }
+
         /* Mobile Adjustments */
         @media (max-width: 600px) {
             .controls { flex-direction: column; gap: 20px; }
@@ -323,8 +401,8 @@
 <body>
 
     <header>
-        <h1>JoinImages - Free Image Stitching Tool</h1>
-        <p class="byline">Join, stitch & merge multiple images into one. 100% Client-side & Privacy friendly. We never upload your images.</p>
+        <h1>JoinImages - Free Image Merging Tool</h1>
+        <p class="byline">Join, merge or stitch multiple images into one. 100% Privacy friendly. We never upload your images.</p>
     </header>
 
     <main>
@@ -332,7 +410,7 @@
             <div class="control-group upload-group">
                 <label class="upload-btn" for="fileInput">
                     <div>
-                        <strong>+ Upload Images</strong><br>
+                        <strong>+ Add Images</strong><br>
                         <span style="font-size:13px; font-weight:normal; opacity:0.8;">Drag & drop or click to select</span>
                     </div>
                 </label>
@@ -348,10 +426,26 @@
             </div>
 
             <div class="control-group">
-                <span class="control-title">Size Adjustment</span>
+                <div class="control-title-row">
+                    <span class="control-title">Size Adjustment</span>
+                    <div class="tooltip">?
+                        <span class="tooltip-text">What should I do if the images are of different dimensions?</span>
+                    </div>
+                </div>
+                
                 <div class="radio-group">
-                    <label><input type="radio" name="sizing" value="original" checked> Do Nothing (Keep Original)</label>
-                    <label><input type="radio" name="sizing" value="fit"> Reduce Bigger Images to Fit</label>
+                    <label>
+                        <input type="radio" name="sizing" value="original" checked> Do Nothing 
+                        <div class="tooltip" style="margin-left:5px;">?
+                            <span class="tooltip-text">The original dimensions of each image will be preserved.</span>
+                        </div>
+                    </label>
+                    <label>
+                        <input type="radio" name="sizing" value="fit"> Reduce Bigger Images
+                        <div class="tooltip" style="margin-left:5px;">?
+                            <span class="tooltip-text">All bigger images will be reduced to the dimensions of the smaller image.</span>
+                        </div>
+                    </label>
                 </div>
             </div>
         </div>
@@ -363,31 +457,35 @@
         </div>
 
         <div class="actions" id="actionPanel">
-            <button class="btn" id="downloadBtn">Download Stitched Image</button>
+            <button class="btn downloadBtn">Download Merged Image</button>
         </div>
 
         <div class="preview-area" id="previewContainer">
             <canvas id="canvas"></canvas>
         </div>
 
+        <div class="actions" id="actionPanelBottom" style="margin-top: 20px;">
+            <button class="btn downloadBtn">Download Merged Image</button>
+        </div>
+
         <article class="seo-content">
-            <h2>How to Join Images Online for Free</h2>
-            <p>Welcome to <strong>Join Images</strong>, the simplest tool to combine photos into a single file. Whether you need to create a vertical collage for Pinterest, stitch screenshots for a tutorial, or merge photos for a comparison, our tool handles it instantly.</p>
+            <h2>How to Join or Merge Images Online for Free</h2>
+            <p>Welcome to <strong>Join Images</strong>, the simplest tool to combine & merge photos & images into a single file. Whether you need to create a vertical collage for Pinterest, stitch screenshots for a tutorial, or merge photos for a comparison, our tool handles it instantly.</p>
             
-            <h3>Why use this Image Stitcher?</h3>
+            <h3>Why use this Image merging and joining tool?</h3>
             <ul>
                 <li><strong>100% Private:</strong> Your photos are processed in your browser. They are never uploaded to our servers.</li>
-                <li><strong>No Watermarks:</strong> Download your stitched images clean and free.</li>
+                <li><strong>No Watermarks:</strong> Download your merged images clean and free.</li>
                 <li><strong>Smart Resizing:</strong> Automatically scale down larger images to fit perfectly with smaller ones without distortion.</li>
                 <li><strong>Drag & Drop:</strong> Easily reorder your image stack before downloading.</li>
             </ul>
 
             <h3>How it works</h3>
             <ol>
-                <li>Click <strong>Upload Images</strong> to select your files.</li>
+                <li>Click <strong>Add Images</strong> to select your files.</li>
                 <li>Choose between <strong>Vertical</strong> (top-to-bottom) or <strong>Horizontal</strong> (side-by-side) stacking.</li>
                 <li>Drag the thumbnails to rearrange the order.</li>
-                <li>Click <strong>Download Stitched Image</strong> to save your file.</li>
+                <li>Click <strong>Download Merged Image</strong> to save your file.</li>
             </ol>
         </article>
     </main>
@@ -450,15 +548,29 @@
         </div>
     </div>
 
+    <div id="donateModal" class="modal-overlay" onclick="closeModal(event, 'donateModal')">
+        <div class="modal-content" style="text-align: center;">
+            <button class="modal-close" onclick="closeModal(null, 'donateModal')">&times;</button>
+            <div class="modal-body">
+                <h2 style="margin-bottom: 10px;">Thank You! 🎉</h2>
+                <p style="font-size: 1.1rem; color: #334155;">If this tool has helped you save time and effort today, consider supporting EpicWhale with $3 🙏</p>
+                <a href="https://buymeacoffee.com/noicenoice" target="_blank" class="donate-btn">☕ Buy Us A Coffee</a>
+            </div>
+        </div>
+    </div>
+
     <script>
         const fileInput = document.getElementById('fileInput');
         const queueList = document.getElementById('queueList');
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        const downloadBtn = document.getElementById('downloadBtn');
         const actionPanel = document.getElementById('actionPanel');
+        const actionPanelBottom = document.getElementById('actionPanelBottom');
         const previewContainer = document.getElementById('previewContainer');
         const allRadios = document.querySelectorAll('input[type="radio"]');
+        
+        // Select BOTH download buttons (class .downloadBtn)
+        const downloadBtns = document.querySelectorAll('.downloadBtn');
 
         let images = [];
 
@@ -538,9 +650,11 @@
 
             if(images.length > 0) {
                 actionPanel.style.display = 'flex';
+                actionPanelBottom.style.display = 'flex';
                 previewContainer.style.display = 'block';
             } else {
                 actionPanel.style.display = 'none';
+                actionPanelBottom.style.display = 'none';
                 previewContainer.style.display = 'none';
                 queueList.innerHTML = '<span style="color:#64748b; margin: auto; text-align: center;">Selected images will appear here.<br>Drag to reorder.</span>';
             }
@@ -640,41 +754,52 @@
 
         allRadios.forEach(r => r.addEventListener('change', stitchImages));
 
-        // 5. Download / Share Logic (Mobile Aware)
-        downloadBtn.addEventListener('click', () => {
+        // 5. Download / Share Logic (Attached to BOTH buttons)
+        const handleDownload = () => {
             canvas.toBlob(async (blob) => {
                 if (!blob) return;
                 
                 const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-                const fileName = `stitched-image-${timestamp}.png`;
+                const fileName = `merged-image-${timestamp}.png`;
                 const file = new File([blob], fileName, { type: 'image/png' });
 
                 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                let shareSuccessful = false;
 
                 if (isMobile && navigator.canShare && navigator.canShare({ files: [file] })) {
                     try {
                         await navigator.share({
                             files: [file],
-                            title: 'Stitched Image',
+                            title: 'Merged Image',
                             text: 'Created with JoinImages.com'
                         });
-                        return;
+                        shareSuccessful = true;
                     } catch (error) {
                         if (error.name !== 'AbortError') console.log('Share failed, falling back to download');
                     }
                 }
 
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.download = fileName;
-                link.href = url;
-                document.body.appendChild(link);
-                link.click();
-                
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
+                if (!shareSuccessful) {
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.download = fileName;
+                    link.href = url;
+                    document.body.appendChild(link);
+                    link.click();
+                    
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                }
+
+                // Show Donation Modal after action initiates
+                setTimeout(() => {
+                    openModal('donateModal');
+                }, 1000); // 1 second delay feels natural
+
             }, 'image/png');
-        });
+        };
+
+        downloadBtns.forEach(btn => btn.addEventListener('click', handleDownload));
 
     </script>
 </body>
