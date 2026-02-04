@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://joinimages.com/sitemap.xml
