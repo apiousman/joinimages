@@ -9,6 +9,11 @@
       <meta name="author" content="Join Images">
       <link rel="canonical" href="https://joinimages.com/">
       <link rel="icon" href="https://epicwhale.app/lovable-uploads/53c1e7e8-2fb9-48b1-a0c4-f73ed0525ea7.png">
+      
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
       <meta property="og:title" content="Join Images - Merge & Join images for Free!">
       <meta property="og:description" content="Join, merge or stitch multiple images into one. 100% Privacy friendly. We never upload your images.">
       <meta property="og:type" content="website">
@@ -39,30 +44,67 @@
          :root {
          --primary: #2563eb;
          --primary-hover: #1d4ed8;
-         --bg: #f8fafc;
+         --bg: #ffffff;
          --surface: #ffffff;
          --border: #e2e8f0;
          --text-main: #1e293b;
          --text-sub: #64748b;
          }
          body {
-         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+         font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
          background-color: var(--bg);
          color: var(--text-main);
          margin: 0;
-         padding: 20px;
+         padding: 0; 
          display: flex;
          flex-direction: column;
          align-items: center;
          line-height: 1.5;
          min-height: 100vh;
          }
+
+         /* Epicwhale Brand Bar */
+         .brand-bar {
+         width: 100%;
+         background-color: transparent;
+         color: #7f786f;
+         border-bottom: 1px solid #f0ece6;
+         padding: 8px 20px;
+         font-size: 0.8rem;
+         box-sizing: border-box;
+         }
+         .brand-bar-inner {
+         max-width: 800px;
+         margin: 0 auto;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         gap: 15px;
+         flex-wrap: wrap;
+         }
+         .brand-bar a {
+         color: #7f786f;
+         text-decoration: none;
+         font-weight: 500;
+         transition: color 0.2s;
+         }
+         .brand-bar a:hover {
+         color: #1e293b;
+         text-decoration: underline;
+         }
+         .brand-bar span {
+         opacity: 0.5;
+         font-size: 0.8rem;
+         color: #7f786f;
+         }
+
          /* Header Styling */
-         header { text-align: center; margin-bottom: 30px; max-width: 600px; }
+         .main-title-header { text-align: center; margin-top: 40px; margin-bottom: 30px; max-width: 600px; padding: 0 20px; box-sizing: border-box; }
          h1 { margin: 0 0 10px 0; font-size: 2rem; letter-spacing: -0.02em; }
          .byline { color: var(--text-sub); font-size: 1.1rem; margin: 0; }
+         
          /* Main App Interface */
-         main { width: 100%; display: flex; flex-direction: column; align-items: center; flex: 1; }
+         main { width: 100%; display: flex; flex-direction: column; align-items: center; flex: 1; padding: 0 20px; box-sizing: border-box; }
          .controls {
          background: var(--surface);
          padding: 24px;
@@ -152,6 +194,7 @@
          cursor: pointer;
          font-weight: 600;
          font-size: 1rem;
+         font-family: 'Outfit', sans-serif;
          transition: background 0.2s, transform 0.1s;
          }
          .btn:hover { background-color: var(--primary-hover); }
@@ -193,7 +236,7 @@
          display: flex;
          gap: 15px;
          padding: 20px;
-         background: #e2e8f0;
+         background: #f4f9ff;
          border-radius: 12px;
          overflow-x: auto;
          min-height: 140px;
@@ -228,6 +271,7 @@
          display: flex; align-items: center; justify-content: center;
          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
          transition: background 0.2s;
+         font-family: 'Outfit', sans-serif;
          }
          .thumb-card .remove-btn:hover { background: #dc2626; }
          /* Canvas / Preview */
@@ -256,51 +300,64 @@
          .seo-content h2 { margin-top: 0; color: #0f172a; }
          .seo-content h3 { color: #0f172a; margin-top: 25px; }
          .seo-content p { margin-bottom: 15px; color: #475569; }
+         
          /* Footer Styling */
          footer {
          width: 100%;
-         padding: 30px 20px;
+         padding: 40px 20px;
          background: var(--bg);
          border-top: 1px solid var(--border);
          text-align: center;
          margin-top: auto;
+         box-sizing: border-box;
          }
          .footer-content {
          display: flex;
          flex-direction: column;
-         gap: 12px;
          align-items: center;
-         color: #0f172a;
-         font-weight: 500;
          }
-         .footer-brand {
-         display: flex;
-         align-items: center;
-         gap: 6px;
-         font-size: 1.1rem;
+         .footer-mascot {
+         width: 189px;
+         height: auto;
+         margin-bottom: 12px;
          }
-         .footer-brand a {
-         color: #0f172a;
-         text-decoration: none;
-         opacity: 0.8;
-         transition: opacity 0.2s;
+         .footer-title {
+         font-size: 0.9rem;
+         font-weight: 400;
+         color: #8c8c8d;
+         margin-bottom: 15px;
          }
-         .footer-brand a:hover { opacity: 1; text-decoration: underline; }
          .footer-links {
          display: flex;
-         gap: 20px;
-         font-size: 0.95rem;
+         gap: 15px;
+         align-items: center;
+         flex-wrap: wrap;
+         justify-content: center;
+         margin-bottom: 15px;
          }
+         .footer-links a,
          .footer-links button {
          background: none;
          border: none;
-         color: #334155;
+         color: #64748b;
          cursor: pointer;
-         font-weight: 600;
+         font-weight: 400;
          padding: 0;
-         font-size: 1rem;
+         font-size: 0.9rem;
+         text-decoration: none;
+         transition: color 0.2s;
+         font-family: 'Outfit', sans-serif;
          }
-         .footer-links button:hover { color: var(--primary); }
+         .footer-links a:hover,
+         .footer-links button:hover {
+         color: var(--primary);
+         }
+         .footer-divider {
+         color: #cbd5e1;
+         user-select: none;
+         text-decoration: none;
+         }
+
          /* Modal / Popup Styling */
          .modal-overlay {
          position: fixed;
@@ -336,6 +393,7 @@
          align-items: center;
          justify-content: center;
          color: #64748b;
+         font-family: 'Outfit', sans-serif;
          }
          .modal-close:hover { background: #e2e8f0; color: #0f172a; }
          .modal-body h2 { margin-top: 0; }
@@ -360,13 +418,23 @@
          .controls { flex-direction: column; gap: 20px; }
          .control-group { width: 100%; }
          h1 { font-size: 1.75rem; }
-         .footer-brand { flex-direction: column; gap: 5px; }
          }
       </style>
    </head>
    <body>
-      <header>
-         <h1>JoinImages - Free Image Merging Tool</h1>
+
+      <header class="brand-bar" aria-label="Epicwhale tools">
+         <div class="brand-bar-inner">
+            <a href="https://noicenoice.com/" target="_blank" rel="noopener noreferrer nofollow">NoiceNoice.com</a>
+            <span aria-hidden="true">•</span>
+            <a href="https://appstoreshots.xyz/" target="_blank" rel="noopener noreferrer nofollow">AppStoreShots.xyz</a>
+            <span aria-hidden="true">•</span>
+            <a href="https://epicwhale.app/" target="_blank" rel="noopener noreferrer nofollow">Epicwhale.app</a>
+         </div>
+      </header>
+
+      <header class="main-title-header">
+         <h1><span style="color: #000000;">JoinImages -</span> <span style="color: #dd7b28;">Free Image Merging Tool</span></h1>
          <p class="byline">Join, merge or stitch multiple images into one. 100% Privacy friendly. We never upload your images.</p>
       </header>
       <main>
@@ -443,18 +511,21 @@
             </ol>
          </article>
       </main>
+      
       <footer>
          <div class="footer-content">
-            <div class="footer-brand">
-               <span>❤️ from the friendly whale • </span>
-               <a href="mailto:hello@epicwhale.app">hello@epicwhale.app</a>
-            </div>
+            <img src="https://appstoreshots.xyz/epicwhale-mascot.avif" alt="Epicwhale Mascot" class="footer-mascot">
+            <div class="footer-title">from the friendly whale</div>
             <div class="footer-links">
+               <a href="mailto:hello@epicwhale.app">hello@epicwhale.app</a>
+               <span class="footer-divider">•</span>
                <button onclick="openModal('privacyModal')">Privacy Policy</button>
+               <span class="footer-divider">•</span>
                <button onclick="openModal('termsModal')">Terms of Use</button>
             </div>
          </div>
       </footer>
+
       <div id="privacyModal" class="modal-overlay" onclick="closeModal(event, 'privacyModal')">
          <div class="modal-content">
             <button class="modal-close" onclick="closeModal(null, 'privacyModal')">&times;</button>
